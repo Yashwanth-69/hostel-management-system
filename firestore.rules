@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isWarden() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'warden';
+    }
+    
+    function isStudent() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'student';
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isOwner(userId) || isWarden();
+      allow delete: if isWarden();
+    }
+
+    // Rooms collection
+    match /rooms/{roomId} {
+      allow read: if isAuthenticated();
+      allow write: if isWarden();
+    }
+
+    // Room allocations collection
+    match /roomAllocations/{allocationId} {
+      allow read: if isAuthenticated();
+      allow write: if isWarden();
+    }
+
+    // Announcements collection
+    match /announcements/{announcementId} {
+      allow read: if isAuthenticated();
+      allow write: if isWarden();
+    }
+
+    // Complaints collection
+    match /complaints/{complaintId} {
+      allow read: if isAuthenticated() && 
+        (isWarden() || resource.data.studentId == request.auth.uid);
+      allow create: if isStudent();
+      allow update: if isWarden() || 
+        (isStudent() && resource.data.studentId == request.auth.uid);
+    }
+
+    // Payments collection
+    match /payments/{paymentId} {
+      allow read: if isAuthenticated() && 
+        (isWarden() || resource.data.studentId == request.auth.uid);
+      allow create, update: if isWarden();
+    }
+  }
+}
