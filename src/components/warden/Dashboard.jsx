@@ -109,7 +109,7 @@ export default function WardenDashboard() {
   return (
     <div className="min-h-screen bg-gray-300 py-8">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-white mb-8">Warden Dashboard</h1>
+        <h1 className="text-3xl font-bold text-black mb-8">Warden Dashboard</h1>
         
         {/* Stats cards */}
         <div className="flex flex-wrap justify-around gap-2 mb-8 ">
@@ -186,7 +186,7 @@ export default function WardenDashboard() {
             <h3 className="font-semibold text-gray-800 mb-1">Announcements</h3>
             <p className="text-sm text-black mb-4">Post and manage announcements</p>
             <span className="text-indigo-500 flex items-center justify-center">
-              Access <FaLongArrowAltRight className="ml-1" />
+              Post <FaLongArrowAltRight className="ml-1" />
             </span>
           </Link>
           

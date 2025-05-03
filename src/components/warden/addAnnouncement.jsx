@@ -39,7 +39,7 @@ export default function AddAnnouncement() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-8 px-4">
+    <div className="min-h-screen bg-gray-300 flex items-center justify-center py-8 px-4">
       <div className="max-w-lg w-full bg-white rounded-lg shadow-md p-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Add New Announcement</h1>
 
